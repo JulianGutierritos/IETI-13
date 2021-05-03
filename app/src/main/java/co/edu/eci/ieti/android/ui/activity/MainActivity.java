@@ -10,7 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import co.edu.eci.ieti.R;
+import co.edu.eci.ieti.android.network.TasksAdapter;
 import co.edu.eci.ieti.android.storage.Storage;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -22,6 +26,8 @@ public class MainActivity
 {
 
     private Storage storage;
+    private RecyclerView recyclerView;
+    private TasksAdapter tasksAdapter;
 
     @Override
     protected void onCreate( Bundle savedInstanceState )
@@ -52,6 +58,9 @@ public class MainActivity
 
         NavigationView navigationView = findViewById( R.id.nav_view );
         navigationView.setNavigationItemSelectedListener( this );
+        tasksAdapter = new TasksAdapter();
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        configureRecyclerView();
     }
 
     @Override
@@ -110,5 +119,12 @@ public class MainActivity
         DrawerLayout drawer = findViewById( R.id.drawer_layout );
         drawer.closeDrawer( GravityCompat.START );
         return true;
+    }
+
+    private void configureRecyclerView()
+    {
+        recyclerView.setHasFixedSize( true );
+        LinearLayoutManager layoutManager = new LinearLayoutManager( this );
+        recyclerView.setAdapter( tasksAdapter );
     }
 }
