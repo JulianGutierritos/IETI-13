@@ -1,5 +1,7 @@
 package co.edu.eci.ieti.android.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -8,6 +10,7 @@ public class User
 {
 
     @PrimaryKey
+    @NonNull
     private String email;
 
     private String password;
@@ -16,7 +19,7 @@ public class User
 
     private String lastName;
 
-    private RolesEnum role = RolesEnum.USER;
+    private String role;
 
 
     public User()
@@ -72,12 +75,12 @@ public class User
         this.lastName = lastName;
     }
 
-    public RolesEnum getRole()
+    public String getRole()
     {
         return role;
     }
 
-    public void setRole( RolesEnum role )
+    public void setRole( String role )
     {
         this.role = role;
     }

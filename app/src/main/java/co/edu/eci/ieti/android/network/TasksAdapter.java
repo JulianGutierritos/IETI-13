@@ -27,11 +27,12 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder>
     @Override
     public void onBindViewHolder( @NonNull ViewHolder holder, int position )
     {
+        System.out.println("onBindViewHolder");
         Task task = taskList.get( position );
+        Integer priority = task.getPriority();
         ((TextView) holder.itemView.findViewById(R.id.task_description)).setText(task.getDescription());
         ((TextView) holder.itemView.findViewById(R.id.task_date)).setText(task.getDueDate().toString());
-        ((TextView) holder.itemView.findViewById(R.id.task_priority)).setText(task.getPriority());
-        ((TextView) holder.itemView.findViewById(R.id.task_assignedTo)).setText(task.getAssignedTo().getEmail());
+        ((TextView) holder.itemView.findViewById(R.id.task_priority)).setText(priority.toString());
     }
 
     @Override

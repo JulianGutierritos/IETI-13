@@ -1,7 +1,10 @@
 package co.edu.eci.ieti.android.model;
 
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
+import androidx.room.TypeConverters;
 
 import java.util.Date;
 
@@ -15,20 +18,23 @@ public class Task
 
     private int priority;
 
+    @Embedded
     private User assignedTo;
 
+    @TypeConverters(DateConverter.class)
     private Date dueDate;
 
     public Task()
     {
     }
 
-    public Task( long id, String description, int priority, Date dueDate )
+    public Task( long id, String description, int priority, Date dueDate, User assignedTo )
     {
         this.id = id;
         this.description = description;
         this.priority = priority;
         this.dueDate = dueDate;
+        this.assignedTo = assignedTo;
     }
 
     public String getDescription()
@@ -61,9 +67,9 @@ public class Task
         this.dueDate = dueDate;
     }
 
-    public void assignTo( User asignedTo )
+    public void setAssignedTo( User assignedTo )
     {
-        this.assignedTo = asignedTo;
+        this.assignedTo = assignedTo;
     }
 
     public User getAssignedTo()
@@ -87,3 +93,5 @@ public class Task
         return "Task{" + "description='" + description + '\'' + ", priority=" + priority + ", dueDate=" + dueDate + '}';
     }
 }
+
+

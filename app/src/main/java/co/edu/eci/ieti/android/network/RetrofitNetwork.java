@@ -19,6 +19,7 @@ public class RetrofitNetwork
 
     private AuthService authService;
     private TaskService taskService;
+    private String BASE_URL = "http:/192.168.1.80:8080/";
 
     public RetrofitNetwork( final String token )
     {
@@ -39,13 +40,14 @@ public class RetrofitNetwork
             }
         } );
         Retrofit retrofit =
-                new Retrofit.Builder().baseUrl( "http:/10.0.2.2:8080/" ).addConverterFactory( GsonConverterFactory.create() ).client(
+                new Retrofit.Builder().baseUrl( BASE_URL ).addConverterFactory( GsonConverterFactory.create() ).client(
                         httpClient.build() ).build();
+        taskService = retrofit.create( TaskService.class );
     }
 
     public RetrofitNetwork()
     {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl( "http:/10.0.2.2:8080/" ) //localhost for emulator
+        Retrofit retrofit = new Retrofit.Builder().baseUrl( BASE_URL ) //localhost for emulator
             .addConverterFactory( GsonConverterFactory.create() ).build();
 
         authService = retrofit.create( AuthService.class );
@@ -55,8 +57,5 @@ public class RetrofitNetwork
     {
         return authService;
     }
-    public TaskService getTaskService()
-    {
-        return taskService;
-    }
+    public TaskService getTaskService() { return taskService; }
 }

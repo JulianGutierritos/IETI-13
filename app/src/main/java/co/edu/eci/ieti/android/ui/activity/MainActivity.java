@@ -10,11 +10,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import co.edu.eci.ieti.R;
 import co.edu.eci.ieti.android.network.TasksAdapter;
+import co.edu.eci.ieti.android.network.viewModel.TasksViewModel;
 import co.edu.eci.ieti.android.storage.Storage;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -102,7 +106,7 @@ public class MainActivity
         return super.onOptionsItemSelected( item );
     }
 
-    @SuppressWarnings( "StatementWithEmptyBody" )
+
     @Override
     public boolean onNavigationItemSelected( MenuItem item )
     {
@@ -126,5 +130,12 @@ public class MainActivity
         recyclerView.setHasFixedSize( true );
         LinearLayoutManager layoutManager = new LinearLayoutManager( this );
         recyclerView.setAdapter( tasksAdapter );
+        recyclerView.setLayoutManager(layoutManager);
+        TasksViewModel tasksViewModel = new ViewModelProvider(this).get(TasksViewModel.class);
+        tasksViewModel.getTasks(new Storage(this).getToken()).observe(this, tasks -> {
+            runOnUiThread(() -> {
+                tasksAdapter.updateTasks(tasks);
+            });
+        });
     }
 }

@@ -15,7 +15,7 @@ public class TaskRepository {
     private TaskDao mTaskDao;
     private TaskService taskService;
 
-    TaskRepository(Application application, String token) {
+    public TaskRepository(Application application, String token) {
         TaskDatabase db = TaskDatabase.getDatabase(application);
         mTaskDao = db.taskDao();
         taskService = new RetrofitNetwork(token).getTaskService();
@@ -23,14 +23,18 @@ public class TaskRepository {
 
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
-    List<Task> getAllTasks() throws IOException {
+    public List<Task> getAllTasks()  {
         List<Task> tasks;
         mTaskDao.deleteAll();
-        tasks = taskService.getTasks().execute().body();
-        for (Task task : tasks){
-            mTaskDao.insert(task);
+        try {
+            tasks = taskService.getTasks().execute().body();
+            for (Task task : tasks){
+                mTaskDao.insert(task);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return tasks;
+        return mTaskDao.getAllTask();
     }
 
     void insert(Task task) {
